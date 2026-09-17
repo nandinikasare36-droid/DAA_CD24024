@@ -1,0 +1,1295 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Merge Sort Visualization</title>
+
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#0b0b0f;
+    color:#f5f5f5;
+    min-height:100vh;
+}
+
+/* ================= HEADER ================= */
+
+header{
+    background:#15151c;
+    padding:25px 8%;
+    border-bottom:2px solid #ff7a00;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    flex-wrap:wrap;
+    gap:15px;
+}
+
+.logo{
+    font-size:28px;
+    font-weight:bold;
+    color:#ff9d00;
+}
+
+.logo span{
+    color:#f5f5f5;
+}
+
+.subtitle{
+    color:#aaa;
+    font-size:14px;
+}
+
+/* ================= NAVIGATION ================= */
+
+nav{
+    background:#111116;
+    display:flex;
+    justify-content:center;
+    gap:8px;
+    padding:12px;
+    position:sticky;
+    top:0;
+    z-index:10;
+    border-bottom:1px solid #292933;
+}
+
+.tab{
+    background:#202027;
+    border:none;
+    color:#ddd;
+    padding:12px 20px;
+    border-radius:8px;
+    cursor:pointer;
+    font-weight:bold;
+    transition:0.3s;
+}
+
+.tab:hover{
+    background:#ff7a00;
+    color:#111;
+}
+
+.tab.active{
+    background:#ff7a00;
+    color:#111;
+}
+
+/* ================= SECTIONS ================= */
+
+.section{
+    display:none;
+    width:90%;
+    max-width:1200px;
+    margin:35px auto;
+    animation:fade 0.4s ease;
+}
+
+.section.active{
+    display:block;
+}
+
+@keyframes fade{
+    from{
+        opacity:0;
+        transform:translateY(10px);
+    }
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.hero{
+    text-align:center;
+    padding:60px 20px;
+}
+
+.hero h1{
+    font-size:52px;
+    color:#ff9d00;
+    margin-bottom:15px;
+}
+
+.hero h1 span{
+    color:#f5f5f5;
+}
+
+.hero p{
+    color:#bbb;
+    font-size:18px;
+    max-width:750px;
+    margin:auto;
+    line-height:1.7;
+}
+
+.card{
+    background:#15151c;
+    border:1px solid #2b2b35;
+    border-radius:16px;
+    padding:28px;
+    margin-bottom:25px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.25);
+}
+
+.card h2{
+    color:#ff9d00;
+    margin-bottom:15px;
+}
+
+.card h3{
+    color:#ffcf33;
+    margin-bottom:10px;
+}
+
+.card p,
+.card li{
+    color:#d0d0d0;
+    line-height:1.7;
+}
+
+.card ul{
+    padding-left:25px;
+}
+
+/* ================= BADGES ================= */
+
+.badges{
+    display:flex;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:15px;
+    margin-top:30px;
+}
+
+.badge{
+    padding:12px 18px;
+    border-radius:30px;
+    font-weight:bold;
+}
+
+.orange{
+    background:#ff7a00;
+    color:#111;
+}
+
+.green{
+    background:#50e36a;
+    color:#111;
+}
+
+.yellow{
+    background:#ffd447;
+    color:#111;
+}
+
+.purple{
+    background:#b56cff;
+    color:#111;
+}
+
+.pink{
+    background:#ff5caa;
+    color:#111;
+}
+
+/* ================= COMPLEXITY ================= */
+
+.complexity-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.complexity-box{
+    padding:25px;
+    border-radius:14px;
+    background:#202027;
+    border-left:5px solid #ff7a00;
+}
+
+.complexity-box strong{
+    display:block;
+    font-size:28px;
+    color:#50e36a;
+    margin-top:10px;
+}
+
+/* ================= ALGORITHM ================= */
+
+.algorithm-step{
+    display:flex;
+    gap:20px;
+    align-items:center;
+    margin:15px 0;
+    padding:18px;
+    background:#202027;
+    border-radius:12px;
+}
+
+.step-number{
+    min-width:45px;
+    height:45px;
+    border-radius:50%;
+    background:#ff7a00;
+    color:#111;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+/* ================= FLOW CHART ================= */
+
+.flow-container{
+    overflow-x:auto;
+    padding:20px 5px;
+}
+
+.flowchart{
+    min-width:850px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:12px;
+}
+
+.flow-box{
+    background:#202027;
+    border:2px solid #ff9d00;
+    padding:15px 30px;
+    text-align:center;
+    border-radius:10px;
+    min-width:240px;
+    font-weight:bold;
+}
+
+.flow-start{
+    background:#50e36a;
+    color:#111;
+    border-radius:40px;
+    border:0;
+}
+
+.flow-decision{
+    background:#ffd447;
+    color:#111;
+    transform:rotate(0deg);
+    border:0;
+}
+
+.flow-merge{
+    background:#b56cff;
+    color:#111;
+    border:0;
+}
+
+.flow-final{
+    background:#50e36a;
+    color:#111;
+    border:3px solid #d8ffdf;
+}
+
+.arrow{
+    font-size:28px;
+    color:#ff7a00;
+    font-weight:bold;
+}
+
+/* ================= VISUALIZER ================= */
+
+.input-area{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+
+input{
+    flex:1;
+    min-width:250px;
+    padding:15px;
+    border-radius:10px;
+    border:1px solid #444;
+    background:#0f0f14;
+    color:white;
+    font-size:16px;
+    outline:none;
+}
+
+input:focus{
+    border-color:#ff9d00;
+}
+
+button.action{
+    padding:15px 22px;
+    border:none;
+    border-radius:10px;
+    background:#ff7a00;
+    color:#111;
+    font-weight:bold;
+    cursor:pointer;
+    transition:0.3s;
+}
+
+button.action:hover{
+    transform:translateY(-2px);
+    background:#ff9d00;
+}
+
+button.secondary{
+    background:#50e36a;
+}
+
+/* ================= ARRAY ================= */
+
+.array-title{
+    color:#aaa;
+    margin-bottom:12px;
+}
+
+.array{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin:15px 0;
+}
+
+.number{
+    min-width:55px;
+    height:55px;
+    padding:10px;
+    background:#292933;
+    border:2px solid #555;
+    border-radius:10px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    font-weight:bold;
+    transition:0.4s;
+}
+
+.number.compare{
+    background:#ffd447;
+    color:#111;
+    border-color:#ffd447;
+    transform:scale(1.1);
+}
+
+.number.selected{
+    background:#ff5caa;
+    color:#111;
+    border-color:#ff5caa;
+}
+
+.number.sorted{
+    background:#50e36a;
+    color:#111;
+    border-color:#50e36a;
+}
+
+/* ================= FLOW VISUALIZATION ================= */
+
+.visual-flow{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-wrap:wrap;
+    gap:10px;
+    margin:25px 0;
+}
+
+.visual-node{
+    background:#202027;
+    border:2px solid #b56cff;
+    border-radius:12px;
+    padding:18px;
+    min-width:140px;
+    text-align:center;
+}
+
+.visual-arrow{
+    font-size:30px;
+    color:#ff7a00;
+}
+
+/* ================= STEP MESSAGE ================= */
+
+.status{
+    text-align:center;
+    padding:18px;
+    background:#202027;
+    border-radius:12px;
+    border:1px solid #ff7a00;
+    color:#ffd447;
+    font-size:18px;
+    margin:20px 0;
+}
+
+/* ================= FINAL RESULT ================= */
+
+.final-result{
+    text-align:center;
+    padding:30px;
+    background:linear-gradient(135deg,#173b22,#102619);
+    border:3px solid #50e36a;
+    border-radius:18px;
+    margin-top:25px;
+}
+
+.final-result h2{
+    color:#50e36a;
+    margin-bottom:15px;
+}
+
+.final-array{
+    font-size:25px;
+    color:#fff;
+    font-weight:bold;
+    word-break:break-word;
+}
+
+/* ================= TABLE ================= */
+
+.table-container{
+    overflow-x:auto;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:20px;
+}
+
+th{
+    background:#ff7a00;
+    color:#111;
+    padding:14px;
+}
+
+td{
+    padding:14px;
+    border-bottom:1px solid #333;
+    color:#ddd;
+    text-align:center;
+}
+
+tr:nth-child(even){
+    background:#19191f;
+}
+
+tr:hover{
+    background:#27272e;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:700px){
+
+    header{
+        justify-content:center;
+        text-align:center;
+    }
+
+    nav{
+        overflow-x:auto;
+        justify-content:flex-start;
+    }
+
+    .tab{
+        white-space:nowrap;
+    }
+
+    .hero h1{
+        font-size:38px;
+    }
+
+    .section{
+        width:94%;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    <div>
+        <div class="logo">MERGE<span>SORT</span> ⚡</div>
+        <div class="subtitle">Interactive Algorithm Visualization</div>
+    </div>
+</header>
+
+<nav>
+    <button class="tab active" onclick="showTab('home',this)">Home</button>
+    <button class="tab" onclick="showTab('definition',this)">Definition</button>
+    <button class="tab" onclick="showTab('complexity',this)">Complexity</button>
+    <button class="tab" onclick="showTab('algorithm',this)">Algorithm</button>
+    <button class="tab" onclick="showTab('visualization',this)">Visualization</button>
+</nav>
+
+
+<!-- ================= HOME ================= -->
+
+<section id="home" class="section active">
+
+    <div class="hero">
+        <h1>Merge <span>Sort</span></h1>
+
+        <p>
+            Explore the Divide-and-Conquer sorting algorithm through
+            an interactive step-by-step visualization.
+            Enter your own array and watch it get divided,
+            compared, merged and finally sorted.
+        </p>
+
+        <div class="badges">
+            <div class="badge orange">Divide & Conquer</div>
+            <div class="badge green">Stable Sort</div>
+            <div class="badge yellow">O(n log n)</div>
+            <div class="badge purple">Step Visualization</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>How Merge Sort Works</h2>
+        <p>
+            Merge Sort repeatedly divides an array into smaller
+            subarrays until every subarray contains one element.
+            Then the subarrays are merged while comparing their
+            elements to produce a sorted array.
+        </p>
+    </div>
+
+</section>
+
+
+<!-- ================= DEFINITION ================= -->
+
+<section id="definition" class="section">
+
+    <div class="card">
+
+        <h2>What is Merge Sort?</h2>
+
+        <p>
+            Merge Sort is a comparison-based sorting algorithm
+            based on the <b>Divide and Conquer</b> technique.
+            It divides the input array into smaller parts,
+            recursively sorts those parts and then merges them
+            to obtain the final sorted array.
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Key Characteristics</h2>
+
+        <ul>
+            <li>Uses Divide and Conquer strategy.</li>
+            <li>Divides the array into two halves.</li>
+            <li>Recursively sorts both halves.</li>
+            <li>Merges sorted halves.</li>
+            <li>Stable sorting algorithm.</li>
+            <li>Time complexity is O(n log n).</li>
+            <li>Requires additional memory.</li>
+        </ul>
+
+    </div>
+
+</section>
+
+
+<!-- ================= COMPLEXITY ================= -->
+
+<section id="complexity" class="section">
+
+    <div class="card">
+
+        <h2>Time & Space Complexity</h2>
+
+        <div class="complexity-grid">
+
+            <div class="complexity-box">
+                <h3>Best Case</h3>
+                <p>When the input is already favorable.</p>
+                <strong>O(n log n)</strong>
+            </div>
+
+            <div class="complexity-box">
+                <h3>Average Case</h3>
+                <p>For a normal unordered array.</p>
+                <strong>O(n log n)</strong>
+            </div>
+
+            <div class="complexity-box">
+                <h3>Worst Case</h3>
+                <p>Even when elements are arranged unfavorably.</p>
+                <strong>O(n log n)</strong>
+            </div>
+
+            <div class="complexity-box">
+                <h3>Space</h3>
+                <p>Additional temporary arrays are required.</p>
+                <strong>O(n)</strong>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="card">
+
+        <h2>Why O(n log n)?</h2>
+
+        <p>
+            The array is divided approximately log₂(n) times.
+            At each level, the merging operation processes
+            approximately n elements.
+        </p>
+
+        <br>
+
+        <p>
+            Therefore:
+            <b>n × log₂(n) = O(n log n)</b>
+        </p>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ALGORITHM ================= -->
+
+<section id="algorithm" class="section">
+
+    <div class="card">
+
+        <h2>Merge Sort Algorithm</h2>
+
+        <div class="algorithm-step">
+            <div class="step-number">1</div>
+            <div>
+                <b>Start</b>
+                <p>Take the input array.</p>
+            </div>
+        </div>
+
+        <div class="algorithm-step">
+            <div class="step-number">2</div>
+            <div>
+                <b>Divide</b>
+                <p>Find the middle and divide the array into two halves.</p>
+            </div>
+        </div>
+
+        <div class="algorithm-step">
+            <div class="step-number">3</div>
+            <div>
+                <b>Repeat</b>
+                <p>Continue dividing until each part has one element.</p>
+            </div>
+        </div>
+
+        <div class="algorithm-step">
+            <div class="step-number">4</div>
+            <div>
+                <b>Compare</b>
+                <p>Compare the front elements of two sorted parts.</p>
+            </div>
+        </div>
+
+        <div class="algorithm-step">
+            <div class="step-number">5</div>
+            <div>
+                <b>Merge</b>
+                <p>Place the smaller element into the new sorted array.</p>
+            </div>
+        </div>
+
+        <div class="algorithm-step">
+            <div class="step-number">6</div>
+            <div>
+                <b>Complete</b>
+                <p>Continue until all elements have been merged.</p>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- FLOW CHART -->
+
+    <div class="card">
+
+        <h2>Merge Sort Flow Chart</h2>
+
+        <div class="flow-container">
+
+            <div class="flowchart">
+
+                <div class="flow-box flow-start">
+                    START
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="flow-box">
+                    Enter Array
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="flow-box">
+                    Find Middle
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="flow-box">
+                    Divide Array into Two Halves
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="flow-box flow-decision">
+                    Is Each Part<br>
+                    a Single Element?
+                </div>
+
+                <div class="arrow">↓ NO</div>
+
+                <div class="flow-box">
+                    Divide Again
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="flow-box flow-merge">
+                    Compare Elements
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="flow-box flow-merge">
+                    Merge in Sorted Order
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="flow-box flow-merge">
+                    Repeat Until Complete Array
+                </div>
+
+                <div class="arrow">↓</div>
+
+                <div class="flow-box flow-final">
+                    FINAL SORTED ARRAY
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= VISUALIZATION ================= -->
+
+<section id="visualization" class="section">
+
+    <div class="card">
+
+        <h2>Interactive Merge Sort</h2>
+
+        <p>
+            Enter numbers separated by commas.
+            Example: <b>38, 12, 27, 43, 9, 31, 18</b>
+        </p>
+
+        <br>
+
+        <div class="input-area">
+
+            <input
+                type="text"
+                id="arrayInput"
+                value="38,12,27,43,9,31,18"
+                placeholder="Enter array..."
+            >
+
+            <button class="action" onclick="startSort()">
+                ▶ Start Visualization
+            </button>
+
+            <button class="action secondary" onclick="resetVisualizer()">
+                ↻ Reset
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Current Array</h2>
+
+        <div class="array" id="currentArray"></div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Visualization Flow</h2>
+
+        <div class="visual-flow">
+
+            <div class="visual-node">
+                <b>INPUT</b>
+                <br>
+                Unsorted Array
+            </div>
+
+            <div class="visual-arrow">→</div>
+
+            <div class="visual-node">
+                <b>DIVIDE</b>
+                <br>
+                Split into halves
+            </div>
+
+            <div class="visual-arrow">→</div>
+
+            <div class="visual-node">
+                <b>COMPARE</b>
+                <br>
+                Choose smaller
+            </div>
+
+            <div class="visual-arrow">→</div>
+
+            <div class="visual-node">
+                <b>MERGE</b>
+                <br>
+                Build sorted part
+            </div>
+
+            <div class="visual-arrow">→</div>
+
+            <div class="visual-node">
+                <b>SORTED</b>
+                <br>
+                Final Output
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Current Step</h2>
+
+        <div class="status" id="status">
+            Enter an array and click Start Visualization.
+        </div>
+
+    </div>
+
+
+    <div class="card">
+
+        <h2>Step-by-Step Table</h2>
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+                    <tr>
+                        <th>Step</th>
+                        <th>Operation</th>
+                        <th>Left</th>
+                        <th>Right</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+
+                <tbody id="stepTable">
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+
+    <div class="final-result" id="finalResult" style="display:none;">
+
+        <h2>✓ FINAL SORTED OUTPUT</h2>
+
+        <div class="final-array" id="finalArray"></div>
+
+    </div>
+
+</section>
+
+
+<script>
+
+/* ================= TAB SYSTEM ================= */
+
+function showTab(id, button){
+
+    document.querySelectorAll(".section").forEach(section=>{
+        section.classList.remove("active");
+    });
+
+    document.querySelectorAll(".tab").forEach(tab=>{
+        tab.classList.remove("active");
+    });
+
+    document.getElementById(id).classList.add("active");
+
+    button.classList.add("active");
+}
+
+
+/* ================= VARIABLES ================= */
+
+let originalArray = [];
+let steps = [];
+let currentStep = 0;
+let timer = null;
+
+
+/* ================= DISPLAY ARRAY ================= */
+
+function displayArray(arr, highlight=[]){
+
+    const container = document.getElementById("currentArray");
+
+    container.innerHTML = "";
+
+    arr.forEach((value,index)=>{
+
+        const box = document.createElement("div");
+
+        box.className = "number";
+
+        if(highlight.includes(index)){
+            box.classList.add("compare");
+        }
+
+        box.innerText = value;
+
+        container.appendChild(box);
+
+    });
+
+}
+
+
+/* ================= CREATE STEPS ================= */
+
+function createSteps(arr){
+
+    let operations = [];
+    let stepCounter = 1;
+
+    function mergeSort(array, depth=0){
+
+        if(array.length <= 1){
+
+            operations.push({
+                step:stepCounter++,
+                operation:"Base Case",
+                left:array.slice(),
+                right:[],
+                result:array.slice(),
+                type:"base"
+            });
+
+            return array.slice();
+        }
+
+        const middle = Math.floor(array.length/2);
+
+        const left = array.slice(0,middle);
+        const right = array.slice(middle);
+
+        operations.push({
+            step:stepCounter++,
+            operation:"Divide",
+            left:left.slice(),
+            right:right.slice(),
+            result:[],
+            type:"divide"
+        });
+
+        const sortedLeft = mergeSort(left,depth+1);
+        const sortedRight = mergeSort(right,depth+1);
+
+        let merged = [];
+        let i=0;
+        let j=0;
+
+        while(i<sortedLeft.length && j<sortedRight.length){
+
+            if(sortedLeft[i] <= sortedRight[j]){
+
+                merged.push(sortedLeft[i]);
+
+                operations.push({
+                    step:stepCounter++,
+                    operation:"Compare & Select",
+                    left:sortedLeft.slice(i),
+                    right:sortedRight.slice(j),
+                    result:merged.slice(),
+                    type:"compare"
+                });
+
+                i++;
+
+            }else{
+
+                merged.push(sortedRight[j]);
+
+                operations.push({
+                    step:stepCounter++,
+                    operation:"Compare & Select",
+                    left:sortedLeft.slice(i),
+                    right:sortedRight.slice(j),
+                    result:merged.slice(),
+                    type:"compare"
+                });
+
+                j++;
+            }
+        }
+
+        while(i<sortedLeft.length){
+
+            merged.push(sortedLeft[i]);
+
+            operations.push({
+                step:stepCounter++,
+                operation:"Append Remaining",
+                left:sortedLeft.slice(i),
+                right:[],
+                result:merged.slice(),
+                type:"append"
+            });
+
+            i++;
+        }
+
+        while(j<sortedRight.length){
+
+            merged.push(sortedRight[j]);
+
+            operations.push({
+                step:stepCounter++,
+                operation:"Append Remaining",
+                left:[],
+                right:sortedRight.slice(j),
+                result:merged.slice(),
+                type:"append"
+            });
+
+            j++;
+        }
+
+        operations.push({
+            step:stepCounter++,
+            operation:"Merge Complete",
+            left:sortedLeft.slice(),
+            right:sortedRight.slice(),
+            result:merged.slice(),
+            type:"merge"
+        });
+
+        return merged;
+    }
+
+    let sorted = mergeSort(arr);
+
+    operations.push({
+        step:stepCounter++,
+        operation:"FINAL OUTPUT",
+        left:[],
+        right:[],
+        result:sorted,
+        type:"final"
+    });
+
+    return operations;
+}
+
+
+/* ================= START SORT ================= */
+
+function startSort(){
+
+    clearInterval(timer);
+
+    const input = document.getElementById("arrayInput").value.trim();
+
+    if(!input){
+
+        alert("Please enter an array.");
+
+        return;
+    }
+
+    const values = input.split(",").map(x=>Number(x.trim()));
+
+    if(values.some(x=>Number.isNaN(x))){
+
+        alert("Please enter valid numbers separated by commas.");
+
+        return;
+    }
+
+    if(values.length < 2){
+
+        alert("Please enter at least 2 numbers.");
+
+        return;
+    }
+
+    if(values.length > 20){
+
+        alert("Please enter maximum 20 numbers for easy visualization.");
+
+        return;
+    }
+
+    originalArray = values;
+
+    steps = createSteps(values);
+
+    currentStep = 0;
+
+    document.getElementById("stepTable").innerHTML = "";
+
+    document.getElementById("finalResult").style.display = "none";
+
+    displayArray(originalArray);
+
+    document.getElementById("status").innerText =
+        "Starting Merge Sort...";
+
+    timer = setInterval(runStep,900);
+
+}
+
+
+/* ================= RUN STEP ================= */
+
+function runStep(){
+
+    if(currentStep >= steps.length){
+
+        clearInterval(timer);
+
+        return;
+    }
+
+    const step = steps[currentStep];
+
+    document.getElementById("status").innerText =
+        "Step " + step.step + ": " + step.operation;
+
+    let display = step.result.length
+        ? step.result
+        : originalArray;
+
+    displayArray(display);
+
+    addTableRow(step);
+
+    if(step.type === "final"){
+
+        clearInterval(timer);
+
+        document.getElementById("finalResult").style.display = "block";
+
+        document.getElementById("finalArray").innerText =
+            "[" + step.result.join(", ") + "]";
+
+        displayArray(step.result);
+
+    }
+
+    currentStep++;
+}
+
+
+/* ================= TABLE ROW ================= */
+
+function addTableRow(step){
+
+    const tbody = document.getElementById("stepTable");
+
+    const row = document.createElement("tr");
+
+    row.innerHTML = `
+        <td>${step.step}</td>
+        <td>${step.operation}</td>
+        <td>[${step.left.join(", ")}]</td>
+        <td>[${step.right.join(", ")}]</td>
+        <td>[${step.result.join(", ")}]</td>
+    `;
+
+    tbody.appendChild(row);
+
+    row.scrollIntoView({
+        behavior:"smooth",
+        block:"nearest"
+    });
+}
+
+
+/* ================= RESET ================= */
+
+function resetVisualizer(){
+
+    clearInterval(timer);
+
+    currentStep = 0;
+    steps = [];
+    originalArray = [];
+
+    document.getElementById("stepTable").innerHTML = "";
+
+    document.getElementById("finalResult").style.display = "none";
+
+    document.getElementById("status").innerText =
+        "Enter an array and click Start Visualization.";
+
+    displayArray([]);
+
+}
+
+</script>
+
+</body>
+</html>
